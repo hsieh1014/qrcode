@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Scanner</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <style>
+      #preview{
+		position : fixed;
+		top: 120px;
+		left: 0px;
+	  	min-width : 100%;
+	  	min-height : 100%;
+      }
+    </style>
+</head>
+<body>
+	<div style="text-align:center;">
+	  <h1>請掃描發票左側QRcode</h1>
+      <p id="warn">Hello!</p>
+	</div>
+    <video id="preview"></video>
+    <script type="text/javascript">
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+	    scanner.addListener('scan', function (content) {
+		  if(!scanner)
+		  {
+			alert("error");
+			document.getElementById('warn').innerHTML = "無法辨識";
+	      }
+		  else
+		  {
+  	        alert(content);
+		  }
+	    });
+
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          scanner.start(cameras[0]);
+        }
+        else {
+          console.error('No cameras found.');
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    </script>
+
+</body>
+</html>
